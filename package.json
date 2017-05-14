@@ -1,0 +1,22 @@
+{
+  "name": "uvs",
+  "version": "1.0.0",
+  "description": "Volunteers management tool",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orn0t/uvs.git"
+  },
+  "author": "HVS Community",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/orn0t/uvs/issues"
+  },
+  "homepage": "https://github.com/orn0t/uvs#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}

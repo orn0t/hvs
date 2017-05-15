@@ -4,11 +4,15 @@
   "env": {
     "MONGODB_URI": {
       "required": true
+    },
+    "DATABASE_URL": {
+      "required": true
     }
   },
   "formation": {},
   "addons": [
-    "mongolab"
+    "mongolab:sandbox",
+    "heroku-postgresql:hobby-dev"
   ],
   "buildpacks": [
     {

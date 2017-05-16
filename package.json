@@ -18,7 +18,9 @@
   "homepage": "https://github.com/orn0t/uvs#readme",
   "dependencies": {
     "express": "^4.15.2",
-    "mongoose": "^4.9.9"
+    "mongoose": "^4.9.9",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1"
   },
   "devDependencies": {
     "coveralls": "^2.13.1",

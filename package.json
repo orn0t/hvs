@@ -17,8 +17,16 @@
   },
   "homepage": "https://github.com/orn0t/uvs#readme",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "connect-pg-simple": "^4.2.0",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
-    "mongoose": "^4.9.9"
+    "express-session": "^1.15.3",
+    "moment": "^2.18.1",
+    "mongoose": "^4.9.9",
+    "pg": "^6.1.4",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "coveralls": "^2.13.1",

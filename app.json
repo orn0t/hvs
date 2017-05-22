@@ -7,6 +7,12 @@
     },
     "DATABASE_URL": {
       "required": true
+    },
+    "FB_APP_ID": {
+      "required": true
+    },
+    "FB_APP_SECRET": {
+      "required": true
     }
   },
   "formation": {},

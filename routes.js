@@ -17,6 +17,15 @@ module.exports = (app, passport) => {
         })
     });
 
+    app.get('/', authMiddleware, (req, res) => {
+        res.send(200)
+    });
+
+
+    app.get('/welcome', (req, res) => {
+        res.render('welcome.ejs');
+    });
+
     app.get('/profile', authMiddleware, (req, res) => {
         res.json(req.user);
     });
@@ -28,6 +37,11 @@ module.exports = (app, passport) => {
             successRedirect: req.session.returnTo || '/profile',
             failureRedirect: '/'
         })(req, res, next);
+    });
+
+    app.get('/auth/logout', function(req, res) {
+        req.logout();
+        res.redirect('/welcome');
     });
 };
 

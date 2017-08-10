@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/orn0t/uvs#readme",
   "dependencies": {
+    "ejs": "^2.5.7",
+    "ejs-locals": "^1.0.2",
     "express": "^4.15.2",
     "express-session": "^1.15.3",
     "mongoose": "^4.9.9",

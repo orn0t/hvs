@@ -15,6 +15,15 @@ app.use(session({ secret: 'wazzzapmakersgonnamake'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
+var engine = require('ejs-locals');
+
+app.engine('ejs', engine);
+app.set('view cache', false);
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
+app.use(express.static('public'));
+
 require('./auth.js')(passport);
 require('./routes.js')(app, passport);
 

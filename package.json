@@ -4,7 +4,9 @@
   "description": "Volunteers management tool",
   "main": "app.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "postinstall": "grunt less",
+    "start": "nodejs app.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,9 @@
     "ejs-locals": "^1.0.2",
     "express": "^4.15.2",
     "express-session": "^1.15.3",
+    "grunt": "1.0.1",
+    "grunt-cli": "1.2.0",
+    "grunt-contrib-less": "1.4.1",
     "mongoose": "^4.9.9",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1"

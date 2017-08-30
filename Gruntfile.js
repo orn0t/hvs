@@ -12,6 +12,9 @@ module.exports = function(grunt) {
                 options: {
                     paths: ['public/css']
                 },
+                files: {
+                    "public/css/style.css": "public/css/style.less" // destination file and source file
+                }
             },
         }
     });

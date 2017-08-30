@@ -3,6 +3,15 @@
 let Card  = require('./models/card.js');
 
 module.exports = (app, passport) => {
+    app.all('*', function(req, res, next) {
+        if(req.user) {
+            app.locals.you = req.user;
+        }
+
+        return next();
+    });
+
+
     app.get('/card/:number', (req, res) => {
         Card.findOne({number: req.params.number}, (err, card) => {
             if(err) {
@@ -18,7 +27,7 @@ module.exports = (app, passport) => {
     });
 
     app.get('/', authMiddleware, (req, res) => {
-        res.send(200)
+        res.redirect('/profile');
     });
 
 
@@ -27,7 +36,7 @@ module.exports = (app, passport) => {
     });
 
     app.get('/profile', authMiddleware, (req, res) => {
-        res.json(req.user);
+        res.render('profile.ejs');
     });
 
     // Facebook authentication
@@ -35,7 +44,7 @@ module.exports = (app, passport) => {
     app.get('/auth/fb/callback', (req, res, next) => {
         return passport.authenticate('facebook', {
             successRedirect: req.session.returnTo || '/profile',
-            failureRedirect: '/'
+            failureRedirect: '/welcome'
         })(req, res, next);
     });
 

@@ -1,0 +1,13 @@
+<% layout('layout') %>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="user-pic">
+            <img src="https://graph.facebook.com/<%= you.facebook.id %>/picture?type=large" />
+        </div>
+
+    </div>
+    <div class="col-lg-8">
+        <div class="user-coins"><%= you.vCoin %> <span>&cent;</span></div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<% layout('layout') %>
+
+<div class="row main">
+    <% books.forEach(function(book, c) { %>
+
+        <% if( c == 0 || book.user._id != books[(c-1)].user._id) { %>
+            <div class="user-section">
+                <a class="profile-link" href="/user/<%= book.user._id %>"><%= book.user.facebook.name %></a>
+            </div>
+        <% } %>
+        <div class="book col-md-3">
+
+            <a class="" href="/book/<%= book._id %>">
+                <img class="img-thumbnail"
+                     src="http://res.cloudinary.com/hbg61865t/image/upload/c_pad,w_150,h_180/<%= book.cover_image %>" />
+            </a>
+        </div>
+    <% }); %>
+    </ul>
+</div>
+

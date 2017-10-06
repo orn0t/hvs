@@ -1,6 +1,7 @@
 "use strict";
 
 let Card  = require('./models/card.js');
+let User = require('./models/user.js');
 
 module.exports = (app, passport) => {
     app.all('*', function(req, res, next) {
@@ -51,6 +52,26 @@ module.exports = (app, passport) => {
     app.get('/auth/logout', function(req, res) {
         req.logout();
         res.redirect('/welcome');
+    });
+
+    app.all('/manager/*', authMiddleware, (req, res, next) => {
+        if(req.user.is_manager) {
+            return next();
+        }
+
+        res.status(403).json({error: 'Only managers accepted'})
+    });
+
+    app.get('/manager/users', (req, res) => {
+        User.find({}, (err, users) => {
+            if (err) {
+                res.code(500).json({error: err})
+            }
+
+            res.render('manager/users.ejs', {
+                users: users
+            });
+        });
     });
 };
 

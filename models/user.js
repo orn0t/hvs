@@ -16,4 +16,8 @@ let schemaUser = mongoose.Schema({
     }
 });
 
+schemaUser.virtual('is_manager').get(function () {
+    return this.roles && this.roles.includes('manager')
+});
+
 module.exports = mongoose.model('User', schemaUser);

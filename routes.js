@@ -2,6 +2,7 @@
 
 let Card  = require('./models/card.js');
 let User = require('./models/user.js');
+let Mission = require('./models/mission.js');
 
 module.exports = (app, passport) => {
     app.all('*', function(req, res, next) {
@@ -37,7 +38,17 @@ module.exports = (app, passport) => {
     });
 
     app.get('/profile', authMiddleware, (req, res) => {
-        res.render('profile.ejs');
+
+        let context = {
+            missions: []
+        };
+
+        Mission.find({}).exec().then((missions) => {
+            context.missions = missions;
+            res.render('profile.ejs', context)
+        }).catch((err) => {
+            res.status(500).json({error: err})
+        });
     });
 
     // Facebook authentication

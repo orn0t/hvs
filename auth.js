@@ -38,6 +38,7 @@ module.exports = (passport) => {
                 newUser.facebook.id    = profile.id;
                 newUser.facebook.token = token;
                 newUser.facebook.name  = profile.displayName;
+                newUser.roles = ['volunteer'];
 
                 if(profile.emails && profile.emails.length) {
                     newUser.facebook.email = profile.emails[0].value;

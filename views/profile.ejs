@@ -11,3 +11,29 @@
         <div class="user-coins"><%= you.vCoin %> <span>&cent;</span></div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Волонтерські місії
+            </div>
+            <div class="panel-body">
+                <p>
+                      Кожна місія - це невеликий проект чи захід направлений на вирішення одніеї конкретної проблеми.
+                <br/> Ви можете переглянути та долучитися до обраної місії, щоб зробити цей світ трохи кращим.
+                </p>
+            </div>
+
+            <ul class="list-group">
+                <% missions.forEach((mission) => { %>
+                    <li class="list-group-item mission">
+                        <span class="badge"><%= mission.reward %> &cent;</span>
+                        <h4 class="list-group-item-heading"><%= mission.title %></h4>
+                        <p class="list-group-item-text"><%= mission.teaser %></p>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+
+    </div>
+</div>

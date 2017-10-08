@@ -1,6 +1,7 @@
 "use strict";
 
 let FacebookStrategy = require('passport-facebook').Strategy;
+let FacebookTokenStrategy = require('passport-facebook-token');
 
 let User = require('./models/user');
 
@@ -22,37 +23,49 @@ module.exports = (passport) => {
         callbackURL: '/auth/fb/callback',
         profileFields: ['id', 'displayName', 'email']
     }, (token, refreshToken, profile, done) => {
+        return getUser(profile.id, done);
+    }));
 
-        User.findOne({ 'facebook.id' : profile.id }, (err, user) => {
+    passport.use(new FacebookTokenStrategy({
+            clientID: process.env.FB_APP_ID,
+            clientSecret: process.env.FB_APP_SECRET,
+            profileFields: ['id', 'displayName', 'email']
+        }, function(accessToken, refreshToken, profile, done) {
+            return getUser(profile.id, done);
+        }
+    ));
 
-            if (err)
-                return done(err);
+};
 
-            if (user) {
-                return done(null, user);
-            } else {
+function getUser (id, done) {
+    User.findOne({ 'facebook.id' : id }, (err, user) => {
 
-                // if there is no user found with that facebook id, create them
-                let newUser = new User();
+        if (err)
+            return done(err);
 
-                newUser.facebook.id    = profile.id;
-                newUser.facebook.token = token;
-                newUser.facebook.name  = profile.displayName;
-                newUser.roles = ['volunteer'];
+        if (user) {
+            return done(null, user);
+        } else {
 
-                if(profile.emails && profile.emails.length) {
-                    newUser.facebook.email = profile.emails[0].value;
-                }
+            // if there is no user found with that facebook id, create them
+            let newUser = new User();
 
-                newUser.save((err) => {
-                    if (err)
-                        throw err;
+            newUser.facebook.id    = profile.id;
+            newUser.facebook.token = token;
+            newUser.facebook.name  = profile.displayName;
+            newUser.roles = ['volunteer'];
 
-                    return done(null, newUser);
-                });
+            if(profile.emails && profile.emails.length) {
+                newUser.facebook.email = profile.emails[0].value;
             }
 
-        });
+            newUser.save((err) => {
+                if (err)
+                    throw err;
 
-    }));
-};
+                return done(null, newUser);
+            });
+        }
+
+    });
+}

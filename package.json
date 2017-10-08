@@ -27,8 +27,10 @@
     "grunt-cli": "1.2.0",
     "grunt-contrib-less": "1.4.1",
     "mongoose": "^4.9.9",
+    "mongoose-hidden": "^1.4.2",
     "passport": "^0.3.2",
-    "passport-facebook": "^2.1.1"
+    "passport-facebook": "^2.1.1",
+    "passport-facebook-token": "^3.3.0"
   },
   "devDependencies": {
     "coveralls": "^2.13.1",

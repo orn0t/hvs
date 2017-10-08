@@ -4,12 +4,19 @@ let express = require('express');
 let router = express.Router();
 
 module.exports = (passport) => {
-    router.all('*', passport.authenticate('facebook-token'), (req, res, next) => {
-        next(req, res);
+    router.all('*', (req, res, next) => {
+        passport.authenticate('facebook-token', (err, user, info) => {
+            if (err) {
+                res.status(500).json({error: err, info: info}).end();
+            }
+
+            req.user = user;
+
+            return next();
+        })(req, res);
     });
 
     router.get('/v1.0/profile', (req, res) => {
-        // @todo: filter sensitive fields
         res.json(req.user);
     });
 

@@ -4,7 +4,12 @@ let Card  = require('./models/card.js');
 let User = require('./models/user.js');
 let Mission = require('./models/mission.js');
 
+let apiRouter = require('./api.js');
+
 module.exports = (app, passport) => {
+
+    app.use('/api', apiRouter(passport));
+
     app.all('*', function(req, res, next) {
         if(req.user) {
             app.locals.you = req.user;

@@ -20,4 +20,8 @@ schemaUser.virtual('is_manager').get(function () {
     return this.roles && this.roles.includes('manager')
 });
 
+schemaUser.virtual('name').get(function () {
+    return this.facebook.name
+});
+
 module.exports = mongoose.model('User', schemaUser);

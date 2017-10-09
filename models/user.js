@@ -14,6 +14,8 @@ let schemaUser = mongoose.Schema({
         email: String,
         name: String
     }
+}, {
+    toJSON: { virtuals: true }
 });
 
 schemaUser.virtual('is_manager').get(function () {

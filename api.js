@@ -32,5 +32,20 @@ module.exports = (passport) => {
         });
     });
 
+    router.get('/v1.0/missions/:mission', (req, res) => {
+       Mission.findOne({_id: req.params.mission}).exec((err, mission) => {
+           if(err) {
+               res.status(500).json({error: err});
+           }
+
+           if(null == mission) {
+               res.status(404).json({message: "mission not found"});
+           } else  {
+               res.json(mission);
+           }
+
+        });
+    });
+
     return router;
 };

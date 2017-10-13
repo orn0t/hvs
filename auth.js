@@ -23,22 +23,22 @@ module.exports = (passport) => {
         callbackURL: '/auth/fb/callback',
         profileFields: ['id', 'displayName', 'email']
     }, (token, refreshToken, profile, done) => {
-        return getUser(profile.id, done);
+        return getUser(token, profile, done);
     }));
 
     passport.use(new FacebookTokenStrategy({
             clientID: process.env.FB_APP_ID,
             clientSecret: process.env.FB_APP_SECRET,
             profileFields: ['id', 'displayName', 'email']
-        }, function(accessToken, refreshToken, profile, done) {
-            return getUser(profile.id, done);
+        }, function(token, refreshToken, profile, done) {
+            return getUser(token, profile, done);
         }
     ));
 
 };
 
-function getUser (id, done) {
-    User.findOne({ 'facebook.id' : id }, (err, user) => {
+function getUser (token, profile, done) {
+    User.findOne({ 'facebook.id' : profile.id }, (err, user) => {
 
         if (err)
             return done(err);

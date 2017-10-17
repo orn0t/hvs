@@ -1,0 +1,15 @@
+module.exports = {
+    apps: [
+        {
+            name: "uvs",
+            script: "app.js",
+            watch: true,
+            env: {
+                PORT: 3000,
+                MONGODB_URI: 'mongodb://user_name:password@mongodb_host:port/database/',
+                FB_APP_ID: '000000000000000',
+                FB_APP_SECRET: '00000000000000000000000000000000',
+            },
+        },
+    ],
+}

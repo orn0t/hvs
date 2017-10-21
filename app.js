@@ -4,6 +4,8 @@ let express = require('express');
 let mongoose = require('mongoose');
 let session = require('express-session');
 let passport = require('passport');
+let bodyParser = require('body-parser');
+
 
 let app = express();
 
@@ -14,6 +16,8 @@ app.set('port', (process.env.PORT || 3000));
 app.use(session({ secret: 'wazzzapmakersgonnamake'}));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 var engine = require('ejs-locals');
 

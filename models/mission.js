@@ -6,7 +6,11 @@ let schemaMission = mongoose.Schema({
     title: String,
     teaser: String,
     description: String,
-    date: Date,
+    telegram_chat: String,
+    date_from: Date,
+    date_to: Date,
+    time: Number,
+    city: String,
     max_participants: {
         type: Number,
         min: 1

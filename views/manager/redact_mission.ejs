@@ -1,0 +1,44 @@
+<% layout('../layout') %>
+
+<% missions.forEach((mission) => { %>
+    <% if (mission.title == title ) { %>
+        <% var date_from = mission.date_from.getFullYear() + '-' + ('0' + (mission.date_from.getMonth()+1)).slice(-2) + '-' + ('0' + mission.date_from.getDate()).slice(-2); %>
+        <% var time_from = ('0' + (mission.date_from.getHours() - 3)).slice(-2) + ':' + ('0' + mission.date_from.getMinutes()).slice(-2); %>
+        <% var date_to = mission.date_to.getFullYear() + '-' + ('0' + (mission.date_to.getMonth()+1)).slice(-2) + '-' + ('0' + mission.date_to.getDate()).slice(-2); %>
+        <% var time_to = ('0' + (mission.date_to.getHours() - 3)).slice(-2) + ':' + ('0' + mission.date_to.getMinutes()).slice(-2); %>
+        <form method="POST" action="">
+            Название <textarea rows="1" cols="50" name="title"><%=mission.title %></textarea><br />
+            Краткое описание : <textarea rows="1" cols="50" name="teaser"><%=mission.teaser %></textarea><br />
+            Полное описание : <textarea rows="1" cols="20" name="description" ><%=mission.description %></textarea><br />
+            Чат в телеграмме для волонтёров : <input type="text" name="telegram_chat" value=<%=mission.telegram_chat %>><br />
+            Дата начала события : <input type="date" name="date_from" value=<%=date_from %>><br />
+            Время начала события : <input type="time" name="time_from" step="2" value=<%=time_from %>><br />
+            Дата окончания события : <input type="date" name="date_to" value=<%=date_to %>><br />
+            Время окончания события : <input type="time" name="time_to" step="2" value=<%=time_to %>><br />
+            Сколько часов волонтеры задействованы во время проекта : <input type="text" name="time" value=<%=mission.time %>><br />
+            Город : 
+
+            <% if (mission.city == "Одесса") { %>
+                <input type="radio" checked name="city" value="Одесса"/>Одесса
+                <input type="radio" name="city" value="Киев"/>Киев<br />
+            <% } else if (mission.city == "Киев") { %>   
+                <input type="radio" name="city" value="Одесса"/>Одесса
+                <input type="radio" checked name="city" value="Киев"/>Киев<br />
+            <% } %> 
+
+            Лимит участников (максимальное количество) : <input type="text" name="max_participants" value=<%=mission.max_participants %>><br />
+            Награда : <input type="text" name="reward" value=<%=mission.reward %>><br />
+            Опубликовано (флаг означающий что миссию видят волонтеры в списке миссий) :
+
+            <% if (mission.active == true) { %>
+                <input type="radio" checked name="active" value="true"/><br />
+            <% } else { %> 
+                <input type="radio" name="active" value="true"/><br />
+            <% } %> 
+
+                
+            <input type="submit" name="create_mission" value="Редактировать">   
+
+        </form> 
+    <% } %>   
+<% }); %>

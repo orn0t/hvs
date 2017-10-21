@@ -1,5 +1,9 @@
 <% layout('layout') %>
 
+<div class="hidden">
+    
+</div>
+
 <div class="row">
     <div class="col-md-4">
         <div class="user-pic">
@@ -20,16 +24,18 @@
             <div class="panel-body">
                 <p>
                       Кожна місія - це невеликий проект чи захід направлений на вирішення одніеї конкретної проблеми.
-                <br/> Ви можете переглянути та долучитися до обраної місії, щоб зробити цей світ трохи кращим.
+                <br/> Ви можете переглянути та долучитися до обраної місії, щоб зробити цей світ трохи кращим. 
                 </p>
             </div>
-
-            <ul class="list-group">
+            <ul class="list-group">        
                 <% missions.forEach((mission) => { %>
                     <li class="list-group-item mission">
                         <span class="badge"><%= mission.reward %> &cent;</span>
-                        <h4 class="list-group-item-heading"><%= mission.title %></h4>
+                        <h4 class="list-group-item-heading"><a href="/mission/?title=<%= mission.title %>"><%= mission.title %></a></h4>
                         <p class="list-group-item-text"><%= mission.teaser %></p>
+                        <% if(you.is_manager) { %>
+                            <a href="/manager/redact_mission/?title=<%= mission.title %>">Редактировать</a>
+                        <% } %>
                     </li>
                 <% }); %>
             </ul>

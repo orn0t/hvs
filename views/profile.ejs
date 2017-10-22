@@ -28,7 +28,7 @@
                 <% missions.forEach((mission) => { %>
                     <li class="list-group-item mission">
                         <span class="badge"><%= mission.reward %> &cent;</span>
-                        <h4 class="list-group-item-heading"><%= mission.title %></h4>
+                        <h4 class="list-group-item-heading"><a href="/mission"><%= mission.title %></a></h4>
                         <p class="list-group-item-text"><%= mission.teaser %></p>
                     </li>
                 <% }); %>

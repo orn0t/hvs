@@ -1,0 +1,16 @@
+<% layout('../layout') %>
+
+<form method="POST" action="">
+        Заголовок : <input type="text" name="title"/><br />
+        Краткое описание : <input type="text" /><br />
+        Полное описание : <input type="text" /><br />
+        Чат в телеграмме для волонтёров : <input type="text" /><br />
+        Дата и время события (от - до) : <input type="text" /><br />
+        Сколько часов волонтеры задействованы во время проекта : <input type="text" /><br />
+        Город : 
+            <input type="radio" name="city" value="Одесса"/>Одесса
+            <input type="radio" name="city" value="Киев"/>Киев<br />
+        Лимит участников (максимальное количество) : <input type="text" /><br />
+        Опубликовано (флаг означающий что миссию видят волонтеры в списке миссий) :  <input type="radio" name="active" value="active"/><br />
+        <input type="submit" name="create_mission" value="Создать">
+</form>

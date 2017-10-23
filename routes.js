@@ -117,19 +117,6 @@ module.exports = (app, passport) => {
 
     //POST запрос для создания новой миссии
     app.post('/manager/new_mission', urlencodedParser, function(req, res) {
-        let newMission = new Mission({title: req.body.title});
-        
-        newMission.save();
-
-        res.redirect('/profile');
-    });
-    //    var bodyParser = require('body-parser');
-    var urlencodedParser = bodyParser.urlencoded({extended: false});
-
-    let Mission = require('./models/mission');
-
-    //POST запрос для создания новой миссии
-    app.post('/manager/new_mission', urlencodedParser, function(req, res) {
         let newMission = new Mission({
             title: req.body.title,
             teaser: req.body.teaser,

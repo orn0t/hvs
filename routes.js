@@ -5,6 +5,7 @@ let User = require('./models/user.js');
 let Mission = require('./models/mission.js');
 
 let apiRouter = require('./api.js');
+let handlers = require('./WorkWithDB.js');
 
 module.exports = (app, passport) => {
 
@@ -113,22 +114,35 @@ module.exports = (app, passport) => {
     var bodyParser = require('body-parser');
     var urlencodedParser = bodyParser.urlencoded({extended: false});
 
-    let Mission = require('./models/mission');
+   // let Mission = require('./models/mission');
+
+    
+    
+    app.post('/manager/new_mission', urlencodedParser, handlers.formHandler);
 
     //POST запрос для создания новой миссии
-    app.post('/manager/new_mission', urlencodedParser, function(req, res) {
+    /*app.post('/manager/new_mission', urlencodedParser, function(req, res) {
+        
         let newMission = new Mission({
             title: req.body.title,
             teaser: req.body.teaser,
             description: req.body.description,
-            max_participants: req.body.max_participants
+            telegram_chat: req.body.telegram_chat,
+            date_from: req.body.date_from,
+            date_to: req.body.date_to,
+            time: req.body.time,
+            city: req.body.city,
+            max_participants: req.body.max_participants,
+            active: is_active
         });
         
         newMission.save();
 
         res.redirect('/profile');
+
+        //res.render('testejs.ejs', {qs: req.body});
     });
-    //
+    //*/
 
 };
 

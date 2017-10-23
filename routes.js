@@ -120,7 +120,7 @@ module.exports = (app, passport) => {
         let newMission = new Mission({
             title: req.body.title,
             teaser: req.body.teaser,
-            discription: req.body.discription,
+            description: req.body.description,
             max_participants: req.body.max_participants
         });
         

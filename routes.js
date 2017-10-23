@@ -89,6 +89,42 @@ module.exports = (app, passport) => {
             });
         });
     });
+
+    app.get('/mission', (req, res) => {
+
+        let context = {
+            missions: []
+        };
+        
+        Mission.find({}).exec().then((missions) => {
+            context.missions = missions;
+
+            res.render('mission.ejs', context);
+        }).catch((err) => {
+            res.status(500).json({error: err})
+        });
+    });
+
+    app.get('/manager/new_mission', (req, res) => {
+        res.render('manager/new_mission.ejs');
+    });
+
+    
+var bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded({extended: false});
+
+let Mission = require('./models/mission');
+
+//POST запрос для создания новой миссии
+app.post('/manager/new_mission', urlencodedParser, function(req, res) {
+    let newMission = new Mission({title: req.body.title});
+    
+    newMission.save();
+
+    res.redirect('/profile');
+  });
+//
+
 };
 
 function authMiddleware(req, res, next) {

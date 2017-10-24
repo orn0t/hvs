@@ -2,11 +2,19 @@
 
 let mongoose = require('mongoose');
 
+let schemaTransaction = mongoose.Schema({
+    created: { type: Date, default: Date.now },
+    amount: Number,
+    type: String,
+    sid: mongoose.Schema.Types.ObjectId
+});
+
 let schemaUser = mongoose.Schema({
     vCoin: {
         type: Number,
         default: 0
     },
+    transactions: [schemaTransaction],
     roles: [{type: String}],
     facebook: {
         id: String,

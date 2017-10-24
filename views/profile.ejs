@@ -34,7 +34,7 @@
                         <h4 class="list-group-item-heading"><a href="/mission/?title=<%= mission.title %>"><%= mission.title %></a></h4>
                         <p class="list-group-item-text"><%= mission.teaser %></p>
                         <% if(you.is_manager) { %>
-                            <!--<button onclick="RedactMission()">Редактировать</button>-->
+                            <a href="/manager/redact_mission/?title=<%= mission.title %>">Редактировать</a>
                         <% } %>
                     </li>
                 <% }); %>

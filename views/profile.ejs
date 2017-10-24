@@ -1,10 +1,4 @@
 <% layout('layout') %>
-<script>
-    function RedactMission()
-    {
-        alert("YA");
-    }
-</script>
 
 <div class="hidden">
     
@@ -37,7 +31,6 @@
                 <% missions.forEach((mission) => { %>
                     <li class="list-group-item mission">
                         <span class="badge"><%= mission.reward %> &cent;</span>
-                        <!--ссылка еще не работает, нужен обработать get запрос-->
                         <h4 class="list-group-item-heading"><a href="/mission/?title=<%= mission.title %>"><%= mission.title %></a></h4>
                         <p class="list-group-item-text"><%= mission.teaser %></p>
                         <% if(you.is_manager) { %>

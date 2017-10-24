@@ -1,12 +1,19 @@
 <% layout('layout') %>
 
 <% missions.forEach((mission) => { %>
-    <% if (mission.title == "Доглянути територію Ботанічного саду ОНУ" ) { %>
+    <% if (mission.title == title ) { %>
         <li class="list-group-item mission">
                 <span class="badge"><%= mission.reward %> &cent;</span>
                 <h4 class="list-group-item-heading"><%= mission.title %></h4>
                 <p class="list-group-item-text"><%= mission.teaser %></p>
                 <p class="description"><%= mission.description %></p>
+                <p class="">Чат в telegram <%= mission.telegram_chat %></p>
+                <p class="">Город в котором будет проходить мероприятие <%= mission.city %></p>
+                <p class="">Максимальное количество участников <%= mission.max_participants %></p>
+                <p class="">Начало <%= mission.date_from.getDay() %>.<%= mission.date_from.getMonth() %> 
+                                    <%= mission.date_from.getHours() %>:<%= mission.date_from.getMinutes() %></p>
+                <p class="">Конец <%= mission.date_to.getDay() %>.<%= mission.date_to.getMonth() %> 
+                                     <%= mission.date_to.getHours() %>:<%= mission.date_to.getMinutes() %></p>
         </li>
     <% } %>   
 <% }); %>

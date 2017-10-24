@@ -95,11 +95,13 @@ module.exports = (app, passport) => {
         let context = {
             missions: []
         };
-        
+
+        var title = req.query.title;
+
         Mission.find({}).exec().then((missions) => {
             context.missions = missions;
 
-            res.render('mission.ejs', context);
+            res.render('mission.ejs', {title: title, missions : context.missions});
         }).catch((err) => {
             res.status(500).json({error: err})
         });

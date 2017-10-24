@@ -10,10 +10,10 @@
                 <p class="">Чат в telegram <%= mission.telegram_chat %></p>
                 <p class="">Город в котором будет проходить мероприятие <%= mission.city %></p>
                 <p class="">Максимальное количество участников <%= mission.max_participants %></p>
-                <p class="">Начало <%= mission.date_from.getDay() %>.<%= mission.date_from.getMonth() %> 
-                                    <%= mission.date_from.getHours() %>:<%= mission.date_from.getMinutes() %></p>
-                <p class="">Конец <%= mission.date_to.getDay() %>.<%= mission.date_to.getMonth() %> 
-                                     <%= mission.date_to.getHours() %>:<%= mission.date_to.getMinutes() %></p>
+                <p class="">Начало <%= ('0' + mission.date_from.getDate()).slice(-2) %>.<%= ('0' + (mission.date_from.getMonth()+1)).slice(-2) %> 
+                                    <%= mission.date_from.getHours() - 3 %>:<%= mission.date_from.getMinutes() %></p>
+                <p class="">Конец <%= ('0' + mission.date_to.getDate()).slice(-2) %>.<%= ('0' + (mission.date_to.getMonth()+1)).slice(-2) %> 
+                                     <%= mission.date_to.getHours() - 3 %>:<%= mission.date_to.getMinutes() %></p>
         </li>
     <% } %>   
 <% }); %>

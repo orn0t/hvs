@@ -90,6 +90,7 @@ module.exports = (app, passport) => {
         });
     });
 
+
     app.post('/manager/users/:user/refill',  (req, res) => {
         User.findOne({_id: req.params.user}).exec((err, user) => {
             if (err) {
@@ -104,6 +105,7 @@ module.exports = (app, passport) => {
             res.redirect('/manager/users')
         })
     });
+
 
     app.get('/mission', (req, res) => {
 
@@ -133,7 +135,6 @@ module.exports = (app, passport) => {
     //POST запрос для создания новой миссии
     app.post('/manager/new_mission', urlencodedParser, function(req, res) {
         
-
         if (req.body.active == "true")
             var active = true;
         else
@@ -159,6 +160,7 @@ module.exports = (app, passport) => {
     });
 
     app.get('/manager/redact_mission', (req, res) => {
+
 
         let context = {
             missions: []

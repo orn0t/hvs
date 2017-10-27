@@ -13,6 +13,8 @@ mongoose.connect(process.env.MONGODB_URI);
 
 app.set('port', (process.env.PORT || 3000));
 
+app.locals.moment = require('moment');
+
 app.use(session({ secret: 'wazzzapmakersgonnamake'}));
 app.use(passport.initialize());
 app.use(passport.session());

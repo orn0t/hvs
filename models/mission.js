@@ -3,10 +3,26 @@
 let mongoose = require('mongoose');
 
 let schemaMission = mongoose.Schema({
-    title: String,
-    teaser: String,
-    description: String,
-    telegram_chat: String,
+    created: {
+        type: Date,
+        default: Date.now
+    },
+    title: {
+        type: String,
+        default: ''
+    },
+    teaser: {
+        type: String,
+        default: ''
+    },
+    description: {
+        type: String,
+        default: ''
+    },
+    telegram_chat: {
+        type: String,
+        default: ''
+    },
     date_from: Date,
     date_to: Date,
     time: Number,
@@ -21,10 +37,8 @@ let schemaMission = mongoose.Schema({
     },
     active: {
         type: Boolean,
-        default: true
+        default: false
     }
-
-
 });
 
 module.exports = mongoose.model('Mission', schemaMission);

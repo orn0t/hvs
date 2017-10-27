@@ -18,7 +18,6 @@ module.exports = (app, passport) => {
         return next();
     });
 
-
     app.get('/card/:number', (req, res) => {
         Card.findOne({number: req.params.number}, (err, card) => {
             if(err) {
@@ -36,7 +35,6 @@ module.exports = (app, passport) => {
     app.get('/', authMiddleware, (req, res) => {
         res.redirect('/profile');
     });
-
 
     app.get('/welcome', (req, res) => {
         res.render('welcome.ejs');
@@ -90,103 +88,61 @@ module.exports = (app, passport) => {
         });
     });
 
-    app.get('/mission', (req, res) => {
+    app.get('/missions/:id', authMiddleware, (req, res) => {
 
-        let context = {
-            missions: []
-        };
+        Mission.findOne({_id: req.params.id}, (err, mission) => {
+            if(err) {
+                res.status(500).json({error: err});
+            }
 
-        var title = req.query.title;
+            if(mission) {
+                res.render('mission.ejs', { mission: mission } );
+            } else {
+                res.status(404).json({error: 'not found'});
+            }
 
-        Mission.find({}).exec().then((missions) => {
-            context.missions = missions;
-
-            res.render('mission.ejs', {title: title, missions : context.missions});
-        }).catch((err) => {
-            res.status(500).json({error: err})
         });
     });
 
-    app.get('/manager/new_mission', (req, res) => {
-        res.render('manager/new_mission.ejs');
-    });
+    app.get('/manager/missions/:id', (req, res) => {
+        let id = (req.params.id == 'new' ? null : req.params.id);
 
-    
-    var bodyParser = require('body-parser');
-    var urlencodedParser = bodyParser.urlencoded({extended: false});
+        Mission.findOne({_id: id}, (err, mission) => {
 
-    //POST запрос для создания новой миссии
-    app.post('/manager/new_mission', urlencodedParser, function(req, res) {
-        
-        if (req.body.active == "true")
-            var active = true;
-        else
-            var active = false;
+            if(!mission) {
+                mission = new Mission()
+            }
 
-        let newMission = new Mission({
-            title: req.body.title,
-            teaser: req.body.teaser,
-            description: req.body.description,
-            telegram_chat: req.body.telegram_chat,
-            date_from: req.body.date_from + "T" + req.body.time_from + "Z",
-            date_to: req.body.date_to + "T" + req.body.time_to + "Z",
-            time: req.body.time,
-            city: req.body.city,
-            max_participants: req.body.max_participants,
-            reward: req.body.reward,
-            active: active
+            res.render('manager/mission.ejs', { mission: mission, mid: req.params.id });
         });
-
-        newMission.save();
-
-        res.redirect('/profile');
     });
 
-    app.get('/manager/redact_mission', (req, res) => {
-        
-        let context = {
-            missions: []
-        };
+    app.post('/manager/missions/:id', function(req, res) {
+        console.log('active' in req.body);
 
-        var title = req.query.title;
+        if (req.params.id == 'new') {
+            let mission = Mission(req.body);
 
-        Mission.find({}).exec().then((missions) => {
-            context.missions = missions;
-
-            res.render('manager/redact_mission.ejs', {title: title, missions : context.missions});
-        }).catch((err) => {
-            res.status(500).json({error: err})
-        });
-
-    });
-
-    app.post('/manager/redact_mission', urlencodedParser, function(req, res) {
-
-        Mission.findOne({title: req.query.title}, function(err, mission){
-
-            if (req.body.active == "true")
-                var active = true;
-            else
-                var active = false;
-
-            mission.title = req.body.title;
-            mission.teaser = req.body.teaser;
-            mission.description = req.body.description;
-            mission.telegram_chat = req.body.telegram_chat;
-            mission.date_from = req.body.date_from + "T" + req.body.time_from + "Z";
-            mission.date_to = req.body.date_to + "T" + req.body.time_to + "Z";
-            mission.time = req.body.time;
-            mission.city = req.body.city;
-            mission.max_participants = req.body.max_participants;
-            mission.reward = req.body.reward;
-            mission.active = active;
-
+            mission.active = 'active' in req.body;
             mission.save();
-            
-            res.redirect('/profile');
-        });
-    });
+            res.redirect('/manager/missions/' + mission._id);
+        } else {
+            Mission.findOne({_id: req.params.id}, (err, mission) => {
+                if(err) {
+                    res.status(500).json({error: err});
+                }
 
+                if(!mission) {
+                    res.status(404).json({error: 'not found'});
+                }
+
+                mission.set(req.body);
+                mission.active = 'active' in req.body;
+                mission.save();
+                res.redirect('/manager/missions/' + mission._id);
+            });
+        }
+    });
 
     app.post('/manager/users/:user/refill',  (req, res) => {
         User.findOne({_id: req.params.user}).exec((err, user) => {
@@ -201,149 +157,6 @@ module.exports = (app, passport) => {
 
             res.redirect('/manager/users')
         })
-    });
-
-    app.get('/mission', (req, res) => {
-
-        let context = {
-            missions: []
-        };
-
-        var title = req.query.title;
-
-        Mission.find({}).exec().then((missions) => {
-            context.missions = missions;
-
-            res.render('mission.ejs', {title: title, missions : context.missions});
-        }).catch((err) => {
-            res.status(500).json({error: err})
-        });
-    });
-
-    app.get('/manager/new_mission', (req, res) => {
-        res.render('manager/new_mission.ejs');
-    });
-
-
-    var bodyParser = require('body-parser');
-    var urlencodedParser = bodyParser.urlencoded({extended: false});
-
-    //POST запрос для создания новой миссии
-    app.post('/manager/new_mission', urlencodedParser, function(req, res) {
-
-
-        if (req.body.active == "true")
-            var active = true;
-        else
-            var active = false;
-
-        let newMission = new Mission({
-            title: req.body.title,
-            teaser: req.body.teaser,
-            description: req.body.description,
-            telegram_chat: req.body.telegram_chat,
-            date_from: req.body.date_from + "T" + req.body.time_from + "Z",
-            date_to: req.body.date_to + "T" + req.body.time_to + "Z",
-            time: req.body.time,
-            city: req.body.city,
-            max_participants: req.body.max_participants,
-            reward: req.body.reward,
-            active: active
-        });
-
-        newMission.save();
-
-        res.redirect('/profile');
-    });
-
-    app.get('/manager/redact_mission', (req, res) => {
-
-        let context = {
-            missions: []
-        };
-
-        var title = req.query.title;
-
-        Mission.find({}).exec().then((missions) => {
-            context.missions = missions;
-
-            res.render('manager/redact_mission.ejs', {title: title, missions : context.missions});
-        }).catch((err) => {
-            res.status(500).json({error: err})
-        });
-
-    });
-
-    app.post('/manager/redact_mission', urlencodedParser, function(req, res) {
-
-        Mission.findOne({title: req.query.title}, function(err, mission){
-
-            if (req.body.active == "true")
-                var active = true;
-            else
-                var active = false;
-
-            mission.title = req.body.title;
-            mission.teaser = req.body.teaser;
-            mission.description = req.body.description;
-            mission.telegram_chat = req.body.telegram_chat;
-            mission.date_from = req.body.date_from + "T" + req.body.time_from + "Z";
-            mission.date_to = req.body.date_to + "T" + req.body.time_to + "Z";
-            mission.time = req.body.time;
-            mission.city = req.body.city;
-            mission.max_participants = req.body.max_participants;
-            mission.reward = req.body.reward;
-            mission.active = active;
-
-            mission.save();
-
-            res.redirect('/profile');
-        });
-    });
-
-    app.get('/manager/redact_mission', (req, res) => {
-
-        let context = {
-            missions: []
-        };
-
-        var title = req.query.title;
-
-        Mission.find({}).exec().then((missions) => {
-            context.missions = missions;
-
-            res.render('manager/redact_mission.ejs', {title: title, missions : context.missions});
-        }).catch((err) => {
-            res.status(500).json({error: err})
-        });
-
-    });
-
-    app.post('/manager/redact_mission', urlencodedParser, function(req, res) {
-
-        Mission.findOne({title: req.query.title}, function(err, mission){
-
-            if (req.body.active == "true")
-                var active = true;
-            else
-                var active = false;
-
-            mission.title = req.body.title;
-            mission.teaser = req.body.teaser;
-            mission.description = req.body.description;
-            mission.telegram_chat = req.body.telegram_chat;
-            mission.date_from = req.body.date_from + "T" + req.body.time_from + "Z";
-            mission.date_to = req.body.date_to + "T" + req.body.time_to + "Z";
-            mission.time = req.body.time;
-            mission.city = req.body.city;
-            mission.max_participants = req.body.max_participants;
-            mission.reward = req.body.reward;
-            mission.active = active;
-
-            mission.save();
-
-            res.redirect('/profile');
-        });
     });
 
 };

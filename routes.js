@@ -90,6 +90,23 @@ module.exports = (app, passport) => {
         });
     });
 
+
+    app.post('/manager/users/:user/refill',  (req, res) => {
+        User.findOne({_id: req.params.user}).exec((err, user) => {
+            if (err) {
+                res.status(500).json({error: err});
+            }
+
+            user.transactions.push({ amount: req.body.amount, type: "magager", sid: req.user._id});
+            user.vCoin = user.transactions.reduce((a, b) => a + b.amount, 0);
+            user.save();
+
+
+            res.redirect('/manager/users')
+        })
+    });
+
+
     app.get('/mission', (req, res) => {
 
         let context = {
@@ -111,7 +128,7 @@ module.exports = (app, passport) => {
         res.render('manager/new_mission.ejs');
     });
 
-    
+
     var bodyParser = require('body-parser');
     var urlencodedParser = bodyParser.urlencoded({extended: false});
 
@@ -143,7 +160,8 @@ module.exports = (app, passport) => {
     });
 
     app.get('/manager/redact_mission', (req, res) => {
-        
+
+
         let context = {
             missions: []
         };
@@ -182,7 +200,52 @@ module.exports = (app, passport) => {
             mission.active = active;
 
             mission.save();
-            
+
+            res.redirect('/profile');
+        });
+    });
+
+    app.get('/manager/redact_mission', (req, res) => {
+
+        let context = {
+            missions: []
+        };
+
+        var title = req.query.title;
+
+        Mission.find({}).exec().then((missions) => {
+            context.missions = missions;
+
+            res.render('manager/redact_mission.ejs', {title: title, missions : context.missions});
+        }).catch((err) => {
+            res.status(500).json({error: err})
+        });
+
+    });
+
+    app.post('/manager/redact_mission', urlencodedParser, function(req, res) {
+
+        Mission.findOne({title: req.query.title}, function(err, mission){
+
+            if (req.body.active == "true")
+                var active = true;
+            else
+                var active = false;
+
+            mission.title = req.body.title;
+            mission.teaser = req.body.teaser;
+            mission.description = req.body.description;
+            mission.telegram_chat = req.body.telegram_chat;
+            mission.date_from = req.body.date_from + "T" + req.body.time_from + "Z";
+            mission.date_to = req.body.date_to + "T" + req.body.time_to + "Z";
+            mission.time = req.body.time;
+            mission.city = req.body.city;
+            mission.max_participants = req.body.max_participants;
+            mission.reward = req.body.reward;
+            mission.active = active;
+
+            mission.save();
+
             res.redirect('/profile');
         });
     });

@@ -9,12 +9,19 @@ let schemaTransaction = mongoose.Schema({
     sid: mongoose.Schema.Types.ObjectId
 });
 
+let schemaNotification = mongoose.Schema({
+    created: { type: Date, default: Date.now },
+    title: String,
+    body: String
+});
+
 let schemaUser = mongoose.Schema({
     vCoin: {
         type: Number,
         default: 0
     },
     transactions: [schemaTransaction],
+    notifications: [schemaNotification],
     roles: [{type: String}],
     facebook: {
         id: String,

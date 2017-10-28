@@ -46,6 +46,13 @@ module.exports = (passport) => {
 
         });
     });
+
+    router.post('/v1.0/profile/fcm', (req, res) => {
+        req.user.fcm_id = req.body.fcm_id;
+        req.user.save();
+
+        res.status(200).json({status: 'OK'});
+    });
     
     return router;
 };

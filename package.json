@@ -24,6 +24,7 @@
     "ejs-locals": "^1.0.2",
     "express": "^4.15.2",
     "express-session": "^1.15.3",
+    "firebase-admin": "^5.4.3",
     "grunt": "1.0.1",
     "grunt-cli": "1.2.0",
     "grunt-contrib-less": "1.4.1",

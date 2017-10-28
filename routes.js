@@ -6,6 +6,16 @@ let Mission = require('./models/mission.js');
 
 let apiRouter = require('./api.js');
 
+let fcm = require('firebase-admin');
+
+fcm.initializeApp({
+    credential: fcm.credential.cert({
+        project_id: process.env.FCM_PROJECT_ID,
+        client_email: process.env.FCM_CLIENT_EMAIL,
+        private_key: process.env.FCM_PRIVATE_KEY,
+    })
+});
+
 module.exports = (app, passport) => {
 
     app.use('/api', apiRouter(passport));
@@ -150,10 +160,24 @@ module.exports = (app, passport) => {
                 res.status(500).json({error: err});
             }
 
-            user.transactions.push({ amount: req.body.amount, type: "magager", sid: req.user._id});
+            const transaction = { amount: req.body.amount, type: "manager", sid: req.user._id}
+            user.transactions.push(transaction);
             user.vCoin = user.transactions.reduce((a, b) => a + b.amount, 0);
             user.save();
 
+            const notification = {
+                title: "Ви отримали " + transaction.amount + " баллів!",
+                body: "Залучайся до соціальних міссій щоб отримати більше."
+            };
+
+            fcm.messaging().sendToDevice(user.fcm_id, {
+                notification: notification
+            }).then((response) => {
+                user.notifications.push(notification);
+                user.save();
+            }).catch((error) => {
+                console.log(error);
+            });
 
             res.redirect('/manager/users')
         })

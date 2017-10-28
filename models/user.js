@@ -21,7 +21,8 @@ let schemaUser = mongoose.Schema({
         token: String,
         email: String,
         name: String
-    }
+    },
+    fcm_id: String
 }, {
     toJSON: { virtuals: true }
 });

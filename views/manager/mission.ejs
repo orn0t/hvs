@@ -34,8 +34,8 @@
                         <div class="col-md-4">
                             <label>Місто проведення</label>
                             <select class="form-control" name="city">
-                                <option value="">Одеса</option>
-                                <option value="">Київ</option>
+                                <option value="Одеса" <%= mission.city=='Одеса'?'active':'' %>>Одеса</option>
+                                <option value="Київ" <%= mission.city=='Київ'?'active':'' %>>Київ</option>
                             </select>
                         </div>
                         <div class="col-md-4">

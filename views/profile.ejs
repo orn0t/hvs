@@ -20,9 +20,11 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 Волонтерські місії
-                <a class="btn btn-xs btn-default pull-right" href="/manager/missions/new">
-                    <i class="glyphicon glyphicon-star"></i> Додати місію
-                </a>
+                <% if(you.is_manager) { %>
+                    <a class="btn btn-xs btn-default pull-right" href="/manager/missions/new">
+                        <i class="glyphicon glyphicon-star"></i> Додати місію
+                    </a>
+                <% } %>
                 <div class="clearfix"></div>
             </div>
             <div class="panel-body">

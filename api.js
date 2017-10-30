@@ -4,18 +4,35 @@ let express = require('express');
 let router = express.Router();
 
 let Mission = require('./models/mission.js');
+let User = require('./models/user.js');
 
 module.exports = (passport) => {
     router.all('*', (req, res, next) => {
-        passport.authenticate('facebook-token', (err, user, info) => {
-            if (err) {
-                res.status(500).json({error: err, info: info}).end();
-            }
+        if(process.env.API_DEBUG) {
+            User.findOne({'facebook.email': req.get('debug_user')}, (err, user) => {
+                if(err) {
+                    res.status(500).json({error: err});
+                }
 
-            req.user = user;
+                if(!user) {
+                    res.status(404).json({error: 'not found'});
+                } else {
+                    req.user = user;
 
-            return next();
-        })(req, res);
+                    return next();
+                }
+            });
+        } else {
+            passport.authenticate('facebook-token', (err, user, info) => {
+                if (err) {
+                    res.status(500).json({error: err, info: info}).end();
+                }
+
+                req.user = user;
+
+                return next();
+            })(req, res);
+        }
     });
 
     router.get('/v1.0/profile', (req, res) => {
@@ -55,10 +72,7 @@ module.exports = (passport) => {
     });
 
     router.post('/v1.0/missions/:mission/apply', (req, res) => {
-        Mission.findOneAndUpdate(
-            {_id: req.params.mission},
-            {'$push': {'participants': {user: req.user._id}}}
-        ).exec((err, mission) => {
+        Mission.findOne({_id: req.params.mission}).exec((err, mission) => {
             if(err) {
                 res.status(500).json({error: err});
             }
@@ -67,14 +81,32 @@ module.exports = (passport) => {
                 res.status(404).json({message: "mission not found"});
             }
 
-            res.status(200).json({status: 'OK'});
+            let participant = mission.participants.filter(a => a.user.equals(req.user._id)).pop();
+
+            if (participant) {
+                if (participant.status == 'REFUSED') {
+                    participant.status = 'NEW';
+
+                    // todo: send manager notification here
+                } else {
+                    return res.status(301).json({error: 'cant apply on mission'});
+                }
+            } else {
+                mission.participants.push({user: req.user._id});
+            }
+
+            mission.save();
+
+            res.status(200).json(mission);
         });
     });
 
     router.post('/v1.0/missions/:mission/refuse', (req, res) => {
+        console.log(req.body['comment']);
         Mission.findOneAndUpdate(
             {_id: req.params.mission, 'participants.user': req.user._id},
-            {'$set': { 'participants.$.status': 'REFUSED', 'participants.$.comment': req.body.comment }}
+            {'$set': { 'participants.$.status': 'REFUSED', 'participants.$.comment': req.body.comment }},
+            {new: true}
         ).exec((err, mission) => {
             if(err) {
                 res.status(500).json({error: err});
@@ -84,7 +116,9 @@ module.exports = (passport) => {
                 res.status(404).json({message: "mission not found"});
             }
 
-            res.status(200).json({status: 'OK'});
+            // todo: send manager notification here
+
+            res.status(200).json(mission);
         });
     });
     

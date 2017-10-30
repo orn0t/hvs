@@ -2,6 +2,20 @@
 
 let mongoose = require('mongoose');
 
+let schemaParticipant = mongoose.Schema({
+    created: Data,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    status: {
+        type: String,
+        enum: ['NEW', 'DECLINED', 'APPROVED', 'REFUSED'],
+        default: 'NEW'
+    },
+    comment: String
+});
+
 let schemaMission = mongoose.Schema({
     created: {
         type: Date,
@@ -27,6 +41,7 @@ let schemaMission = mongoose.Schema({
     date_to: Date,
     time: Number,
     city: String,
+    participants: [schemaParticipant],
     max_participants: {
         type: Number,
         min: 1

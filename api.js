@@ -40,7 +40,7 @@ module.exports = (passport) => {
     });
 
     router.get('/v1.0/missions', (req, res) => {
-        Mission.find({}).populate('participants.user', 'facebook.name').exec((err, missions) => {
+        Mission.find({}).populate('participants.user', 'facebook.name facebook.id').exec((err, missions) => {
             if(err) {
                 res.status(500).json({error: err});
             }

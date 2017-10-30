@@ -53,6 +53,40 @@ module.exports = (passport) => {
 
         res.status(200).json({status: 'OK'});
     });
+
+    router.post('/v1.0/missions/:mission/apply', (req, res) => {
+        Mission.findOneAndUpdate(
+            {_id: req.params.mission},
+            {'$push': {'participants': {user: req.user._id}}}
+        ).exec((err, mission) => {
+            if(err) {
+                res.status(500).json({error: err});
+            }
+
+            if(!mission) {
+                res.status(404).json({message: "mission not found"});
+            }
+
+            res.status(200).json({status: 'OK'});
+        });
+    });
+
+    router.post('/v1.0/missions/:mission/refuse', (req, res) => {
+        Mission.findOneAndUpdate(
+            {_id: req.params.mission, 'participants.user': req.user._id},
+            {'$set': { 'participants.$.status': 'REFUSED', 'participants.$.comment': req.body.comment }}
+        ).exec((err, mission) => {
+            if(err) {
+                res.status(500).json({error: err});
+            }
+
+            if(!mission) {
+                res.status(404).json({message: "mission not found"});
+            }
+
+            res.status(200).json({status: 'OK'});
+        });
+    });
     
     return router;
 };

@@ -40,10 +40,15 @@ module.exports = (passport) => {
     });
 
     router.get('/v1.0/missions', (req, res) => {
-        Mission.find({}).exec((err, missions) => {
+        Mission.find({}).populate('participants.user', 'facebook.name').exec((err, missions) => {
             if(err) {
                 res.status(500).json({error: err});
             }
+
+            missions = missions.map(m => {
+                m.participants = m.participants.filter(a => (a.status == 'APPROVED'));
+                return m;
+            });
 
             res.json(missions);
         });
@@ -92,7 +97,11 @@ module.exports = (passport) => {
                     return res.status(301).json({error: 'cant apply on mission'});
                 }
             } else {
-                mission.participants.push({user: req.user._id});
+                if(participant.length == mission.max_participants) {
+                    return res.status(301).json({error: 'cant apply on mission'});
+                } else {
+                    mission.participants.push({user: req.user._id});
+                }
             }
 
             mission.save();

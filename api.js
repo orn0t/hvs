@@ -40,13 +40,23 @@ module.exports = (passport) => {
     });
 
     router.get('/v1.0/missions', (req, res) => {
-        Mission.find({}).populate('participants.user', 'facebook.name facebook.id').exec((err, missions) => {
+        Mission.find({}).populate('participants.user').exec((err, missions) => {
             if(err) {
                 res.status(500).json({error: err});
             }
 
+
             missions = missions.map(m => {
-                m.participants = m.participants.filter(a => (a.status == 'APPROVED'));
+                m = m.toObject();
+                m.participants = m.participants.map(a => {
+                    if(a.status == 'APPROVED') {
+                        return {
+                            id: a.id,
+                            name: a.user.facebook.name,
+                            fb_id: a.user.facebook.id,
+                        };
+                    }
+                });
                 return m;
             });
 

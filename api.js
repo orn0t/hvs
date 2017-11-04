@@ -45,15 +45,16 @@ module.exports = (passport) => {
                 res.status(500).json({error: err});
             }
 
-
             missions = missions.map(m => {
                 m = m.toObject();
                 m.participants = m.participants.map(a => {
-                    if(a.status == 'APPROVED') {
+                    if(a.status == 'APPROVED' || a.user._id.equals(req.user._id)) {
                         return {
-                            id: a.id,
+                            id: a.user._id,
                             name: a.user.facebook.name,
                             fb_id: a.user.facebook.id,
+                            status: a.status,
+                            comment: a.comment
                         };
                     }
                 });

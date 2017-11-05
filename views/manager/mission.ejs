@@ -40,11 +40,11 @@
                         </div>
                         <div class="col-md-4">
                             <label>Дата початку</label>
-                            <input class="form-control" type="datetime-local" name="date_from" value="<%= moment(mission.date_from).format('YYYY-MM-DDTHH:mm') %>"/>
+                            <input class="form-control" type="datetime-local" name="date_from" value="<%= moment(mission.start).format('YYYY-MM-DDTHH:mm') %>"/>
                         </div>
                         <div class="col-md-4">
                             <label>Дата закінчення</label>
-                            <input class="form-control" type="datetime-local" name="date_to" value="<%= moment(mission.date_to).format('YYYY-MM-DDTHH:mm') %>"/>
+                            <input class="form-control" type="datetime-local" name="date_to" value="<%= moment(mission.finish).format('YYYY-MM-DDTHH:mm') %>"/>
                         </div>
                     </div>
                     <div class="form-group row">

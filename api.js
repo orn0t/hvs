@@ -8,7 +8,7 @@ let User = require('./models/user.js');
 
 module.exports = (passport) => {
     router.all('*', (req, res, next) => {
-        if(process.env.API_DEBUG) {
+        if(process.env.API_DEBUG in ['True', 'true', true]) {
             User.findOne({'facebook.email': req.get('debug_user')}, (err, user) => {
                 if(err) {
                     res.status(500).json({error: err});

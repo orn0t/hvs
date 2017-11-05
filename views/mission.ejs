@@ -13,9 +13,9 @@
             <div class="panel-body">
                 <div>
                     <span class="date">
-                        <%= moment(mission.date_from).format('DD.MM.YYYY HH:mm') %>
+                        <%= moment(mission.start).format('DD.MM.YYYY HH:mm') %>
                         &mdash;
-                        <%= moment(mission.date_to).format('DD.MM.YYYY HH:mm') %>
+                        <%= moment(mission.finish).format('DD.MM.YYYY HH:mm') %>
                     </span>,
                     <span class="city"><%= mission.city %></span>
                     <span class="participants pull-right"><%= mission.max_participants %></span>

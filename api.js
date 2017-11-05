@@ -50,7 +50,8 @@ module.exports = (passport) => {
                 m.participants = m.participants.map(a => {
                     if(a.status == 'APPROVED' || a.user._id.equals(req.user._id)) {
                         return {
-                            id: a.user._id,
+                            id: a._id,
+                            user_id: a.user._id,
                             name: a.user.facebook.name,
                             fb_id: a.user.facebook.id,
                             status: a.status,

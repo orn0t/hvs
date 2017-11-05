@@ -109,7 +109,7 @@ module.exports = (passport) => {
                     return res.status(301).json({error: 'cant apply on mission'});
                 }
             } else {
-                if(participant.length == mission.max_participants) {
+                if(mission.participants.length == mission.max_participants) {
                     return res.status(301).json({error: 'cant apply on mission'});
                 } else {
                     mission.participants.push({user: req.user._id});

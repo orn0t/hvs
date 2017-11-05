@@ -45,9 +45,9 @@
                             <a href="/missions/<%= mission._id %>"><%= mission.title %></a>
                         </h4>
                         <div>
-                            <%= moment(mission.date_from).format('DD.MM.YYYY HH:mm') %>
+                            <%= moment(mission.start).format('DD.MM.YYYY HH:mm') %>
                             &mdash;
-                            <%= moment(mission.date_to).format('DD.MM.YYYY HH:mm') %>, <%= mission.city %></div>
+                            <%= moment(mission.finish).format('DD.MM.YYYY HH:mm') %>, <%= mission.city %></div>
                         <p class="list-group-item-text"><%= mission.teaser %></p>
                     </li>
                 <% }); %>

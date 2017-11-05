@@ -37,8 +37,14 @@ let schemaMission = mongoose.Schema({
         type: String,
         default: ''
     },
-    date_from: Date,
-    date_to: Date,
+    start: {
+        type: Date,
+        default: Date.now
+    },
+    finish: {
+        type: Date,
+        default: Date.now
+    },
     time: Number,
     city: String,
     participants: [schemaParticipant],

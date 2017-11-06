@@ -100,7 +100,7 @@ module.exports = (app, passport) => {
 
     app.get('/missions/:id', authMiddleware, (req, res) => {
 
-        Mission.findOne({_id: req.params.id}, (err, mission) => {
+        Mission.findOne({_id: req.params.id}).populate("participants.user").exec((err, mission) => {
             if(err) {
                 res.status(500).json({error: err});
             }
@@ -152,6 +152,21 @@ module.exports = (app, passport) => {
                 res.redirect('/manager/missions/' + mission._id);
             });
         }
+    });
+
+    app.post('/manager/missions/:id/apply', (req, res) => {
+        Mission.findOneAndUpdate(
+            {_id: req.params.id, 'participants._id': req.body.id},
+            {'$set': { 'participants.$.status': req.body.status, 'participants.$.comment': req.body.comment }},
+            {new: true}
+        ).exec((err, mission) => {
+           if(err) {
+               console.log(err);
+               res.redirect('/profile' );
+           }
+
+           res.redirect('/missions/' + mission._id );
+        });
     });
 
     app.post('/manager/users/:user/refill',  (req, res) => {

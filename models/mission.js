@@ -13,7 +13,7 @@ let schemaParticipant = mongoose.Schema({
         enum: ['NEW', 'DECLINED', 'APPROVED', 'REFUSED'],
         default: 'NEW'
     },
-    comment: String
+    comment: { type: String, default: '' }
 });
 
 let schemaMission = mongoose.Schema({

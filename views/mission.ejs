@@ -28,7 +28,53 @@
 
         <div class="description">
             <%= mission.description %>
+            <p></p>
         </div>
 
+        <% if(you.is_manager) { %>
+        <div class="participants list-group">
+            <% mission.participants.forEach((participant) => { %>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                <img style="margin: 0 10px 10px 0;" class="pull-left img-rounded" src="https://graph.facebook.com/<%= participant.user.facebook.id %>/picture?type=small" />
+                                <%= participant.user.name %><br/>
+                                <% if(participant.status == 'NEW') { %> <span class="label label-default">Очікуе підтвердження</span> <% } %>
+                                <% if(participant.status == 'APPROVED') { %> <span class="label label-success">Підтвердженно</span> <% } %>
+                                <% if(participant.status == 'DECLINED') { %> <span class="label label-danger">Відхилено</span> <% } %>
+                            </div>
+                            <div style="clear: both;">
+                                <label>Коментар:</label>
+                                <p><%= participant.comment %></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <form class="form" method="post" action="/manager/missions/<%= mission._id %>/apply">
+                                <input type="hidden" name="id" value="<%= participant._id %>" />
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="comment" required placeholder="Коментар"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="approved">
+                                        <input type="radio" name="status" value="APPROVED" id="approved" required/>
+                                        &nbsp; Підтвердити &nbsp;&nbsp;&nbsp;
+                                    </label>
+                                    <label for="declined">
+                                        <input type="radio" name="status" value="DECLINED" id="declined" required/>
+                                        &nbsp; Відхилити &nbsp;&nbsp;&nbsp;
+                                    </label>
+                                    <button class="btn btn-default pull-right">
+                                        Зберегти
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        <% } %>
     </div>
 </div>

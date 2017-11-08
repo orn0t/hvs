@@ -6,6 +6,7 @@ let router = express.Router();
 
 let Mission = require('./models/mission.js');
 let User = require('./models/user.js');
+let Product = require('./models/product.js');
 
 module.exports = (passport) => {
     router.all('*', (req, res, next) => {
@@ -38,6 +39,15 @@ module.exports = (passport) => {
 
     router.get('/v1.0/profile', (req, res) => {
         res.json(req.user);
+    });
+
+    router.get('/v1.0/products', (req, res) => {
+        Product.find({}).exec((err, products) => {
+            if(err) {
+                res.status(500).json({error: err});
+            }
+            res.json(products);
+        });
     });
 
     router.get('/v1.0/missions', (req, res) => {

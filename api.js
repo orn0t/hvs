@@ -3,6 +3,7 @@
 let express = require('express');
 let mongoose = require('mongoose');
 let router = express.Router();
+let fcm = require('firebase-admin');
 
 let Mission = require('./models/mission.js');
 let User = require('./models/user.js');
@@ -66,7 +67,7 @@ module.exports = (passport) => {
 
             const transaction = { amount: -product.price, type: "product", sid: product._id };
             req.user.transactions.push(transaction);
-            req.user.vCoin = user.transactions.reduce((a, b) => a + b.amount, 0);
+            req.user.vCoin = req.user.transactions.reduce((a, b) => a + b.amount, 0);
             req.user.save();
 
             const notification = {

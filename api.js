@@ -50,6 +50,43 @@ module.exports = (passport) => {
         });
     });
 
+    router.post('/v1.0/products/:product/buy', (req, res) => {
+        Product.findOneAndUpdate(
+            {_id: req.params.product},
+            {'$push': { orders: { user: req.user._id }}},
+            {new: true}
+        ).exec((err, product) => {
+            if(err) {
+                res.status(500).json({error: err});
+            }
+
+            if(!product) {
+                res.status(404).json({message: "product not found"});
+            }
+
+            const transaction = { amount: -product.price, type: "product", sid: product._id };
+            user.transactions.push(transaction);
+            user.vCoin = user.transactions.reduce((a, b) => a + b.amount, 0);
+            user.save();
+
+            const notification = {
+                title: "Ви вытратили " + product.price + " баллів!",
+                body: "обмінявши їх на винагороду - " + product.name
+            };
+
+            fcm.messaging().sendToDevice(user.fcm_id, {
+                notification: notification
+            }).then((response) => {
+                user.notifications.push(notification);
+                user.save();
+            }).catch((error) => {
+                console.log(error);
+            });
+
+            res.json(product);
+        });
+    });
+
     router.get('/v1.0/missions', (req, res) => {
         Mission.find({}).populate('participants.user').exec((err, missions) => {
             if(err) {

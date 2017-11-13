@@ -65,20 +65,20 @@ module.exports = (passport) => {
             }
 
             const transaction = { amount: -product.price, type: "product", sid: product._id };
-            user.transactions.push(transaction);
-            user.vCoin = user.transactions.reduce((a, b) => a + b.amount, 0);
-            user.save();
+            req.user.transactions.push(transaction);
+            req.user.vCoin = user.transactions.reduce((a, b) => a + b.amount, 0);
+            req.user.save();
 
             const notification = {
                 title: "Ви вытратили " + product.price + " баллів!",
                 body: "обмінявши їх на винагороду - " + product.name
             };
 
-            fcm.messaging().sendToDevice(user.fcm_id, {
+            fcm.messaging().sendToDevice(req.user.fcm_id, {
                 notification: notification
             }).then((response) => {
-                user.notifications.push(notification);
-                user.save();
+                req.user.notifications.push(notification);
+                req.user.save();
             }).catch((error) => {
                 console.log(error);
             });

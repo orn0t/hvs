@@ -17,6 +17,7 @@ let schemaParticipant = mongoose.Schema({
 });
 
 let schemaMission = mongoose.Schema({
+    _id: { type: mongoose.Schema.ObjectId, auto: true },
     created: {
         type: Date,
         default: Date.now

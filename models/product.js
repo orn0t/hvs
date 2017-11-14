@@ -16,6 +16,7 @@ let schemaOrder = mongoose.Schema({
 });
 
 let schemaProduct = mongoose.Schema({
+    _id: { type: mongoose.Schema.ObjectId, auto: true },
     name: String,
     description: String,
     giver: String,

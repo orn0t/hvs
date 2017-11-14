@@ -128,8 +128,6 @@ module.exports = (app, passport) => {
     });
 
     app.post('/manager/missions/:id', function(req, res) {
-        console.log('active' in req.body);
-
         if (req.params.id == 'new') {
             let mission = Mission(req.body);
 

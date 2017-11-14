@@ -18,7 +18,7 @@ module.exports = (passport) => {
                 }
 
                 if(!user) {
-                    res.status(404).json({error: 'not found'});
+                    res.status(403).json({error: 'not found'});
                 } else {
                     req.user = user;
 
@@ -111,7 +111,7 @@ module.exports = (passport) => {
                 return m;
             });
 
-            res.json(missions);
+            res.status(200).json(missions);
         });
     });
 

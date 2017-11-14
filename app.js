@@ -10,6 +10,7 @@ let bodyParser = require('body-parser');
 let app = express();
 
 mongoose.connect(process.env.MONGODB_URI);
+mongoose.Promise = global.Promise;
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -34,6 +35,8 @@ app.use(express.static('public'));
 require('./auth.js')(passport);
 require('./routes.js')(app, passport);
 
-app.listen(app.get('port'), function () {
+let server = app.listen(app.get('port'), function () {
     console.log('Example app listening on port', app.get('port'));
 });
+
+module.exports = server;

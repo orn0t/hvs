@@ -16,6 +16,7 @@ let schemaNotification = mongoose.Schema({
 });
 
 let schemaUser = mongoose.Schema({
+    _id: { type: mongoose.Schema.ObjectId, auto: true },
     vCoin: {
         type: Number,
         default: 0

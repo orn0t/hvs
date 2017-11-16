@@ -6,10 +6,6 @@ mongoose.Promise = global.Promise;
 const Mockgoose = require('mockgoose').Mockgoose;
 const mockgoose = new Mockgoose(mongoose);
 
-let config = require('../ecosystem.config').apps[0].env;
-
-process.env = config;
-
 const proxiedMongoose = {
     connect: (db) => {
         before((done) => {

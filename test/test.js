@@ -5,6 +5,10 @@ let request = require('supertest');
 const app = require('./helper').app;
 const fix = require('./helper').fix;
 
+process.on('unhandledRejection', (reason, p) => {
+    console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+});
+
 describe('Mobile APP api', () => {
 
     after(() => {

@@ -1,0 +1,16 @@
+{
+  "name": "uvs",
+  "scripts": {},
+  "env": {
+    "MONGODB_URI": {"required": true},
+    "DATABASE_URL": {"required": true},
+    "FB_APP_ID": {"required": true},
+    "FB_APP_SECRET": {"required": true}
+  },
+  "formation": {},
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}

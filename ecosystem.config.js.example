@@ -1,0 +1,9 @@
+module.exports = {
+    apps: [
+        {
+            name: "uvs",
+            script: "app.js",
+            watch: true
+        },
+    ],
+}

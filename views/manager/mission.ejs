@@ -1,0 +1,71 @@
+<% layout('../layout') %>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <% if(mid == 'new') { %>
+                    Нова міссія
+                <% } else { %>
+                    <a class="btn btn-default btn-xs pull-right" href="/missions/<%= mid %>">До перегляду &longrightarrow;</a>
+                    Редагування міссії
+                <% } %>
+                <div class="clearfix"></div>
+            </div>
+            <form method="POST" action="/manager/missions/<%= mid %>">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>Назва міссії</label>
+                        <input class="form-control" type="text" name="title" value="<%= mission.title %>"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Стислий тизер</label>
+                        <textarea class="form-control" rows="4" name="teaser"><%= mission.teaser %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Докладний опис</label>
+                        <textarea class="form-control" rows="10" name="description"><%= mission.description %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Приватний telegram канал для обговорення </label>
+                        <input class="form-control" type="text" name="telegram_chat" value="<%= mission.telegram_chat %>"/>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label>Місто проведення</label>
+                            <select class="form-control" name="city">
+                                <option value="Одеса" <%= mission.city=='Одеса'?'selected':'' %>>Одеса</option>
+                                <option value="Київ" <%= mission.city=='Київ'?'selected':'' %>>Київ</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Дата початку</label>
+                            <input class="form-control" type="datetime-local" name="date_from" value="<%= moment(mission.start).format('YYYY-MM-DDTHH:mm') %>"/>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Дата закінчення</label>
+                            <input class="form-control" type="datetime-local" name="date_to" value="<%= moment(mission.finish).format('YYYY-MM-DDTHH:mm') %>"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <label>Годин на людину</label>
+                            <input class="form-control" type="number" name="time" value="<%= mission.time %>"/>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Ліміт учасників</label>
+                            <input class="form-control" type="number" name="max_participants" value="<%= mission.max_participants %>"/>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-footer">
+                    <label>Активно <input type="checkbox" name="active" <%= mission.active?'checked':'' %>/></label>
+                    <button class="btn btn-default pull-right" type="submit">Зберегти</button>
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

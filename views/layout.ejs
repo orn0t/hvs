@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/bootstrap-additions.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <script type="text/javascript" src="/js/jquery.min.js" defer></script>
+    <script type="text/javascript" src="/js/jquery.cookie.js" defer></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js" defer></script>
+</head>
+<body>
+    <div id="fb-root"></div>
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '425730931123872',
+                xfbml      : true,
+                version    : 'v2.6'
+            });
+
+        };
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+    </script>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container col-md-8 col-md-offset-2">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+                    <span class="glyphicon glyphicon-book"></span> Ukrainian Volunteer Service
+                </a>
+            </div>
+
+            <div class="btn-group navbar-btn navbar-right" role="group">
+                <a class="profile btn btn-default" href="/profile">
+                    <img align="left" src="http://graph.facebook.com/v2.8/<%= you.facebook.id %>/picture">
+                    <%= you.facebook.name %>
+                </a>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </button>
+                    <ul class="dropdown-menu user-menu">
+                        <% if(you.is_manager) { %>
+                        <li>
+                            <a href="/manager/users"><i class="glyphicon glyphicon-star"></i> Користувачі</a>
+                        </li>
+                        <li>
+                            <a href="/manager/missions/new"><i class="glyphicon glyphicon-star"></i> Додати міссію</a>
+                        </li>
+                        <% } %>
+                        <li><a href="/profile">Налаштування</a></li>
+                        <li><a href="/auth/logout">Вихiд</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-md-8 col-md-offset-2">
+            <div class=" alert alert-warning">
+                <p>Сервіс працюе в тестовому режимі. Пішить ваші зауваження та ідеї на пошту <a class="alert-link" href="mailto:change@voluntreer.country">change@voluntreer.country</a></p>
+            </div>
+        </div>
+        <div class="col-md-8 col-md-offset-2">
+            <%- body %>
+        </div>
+    </div>
+    <nav class="navbar navbar-default navbar-static-bottom">
+        <div class="container">
+            <p class="navbar-text"><a href="/policy">Privacy policy</a></p>
+        </div>
+    </nav>
+</body>
+</html>

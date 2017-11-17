@@ -30,3 +30,9 @@ node_modules
 
 # Created by .ignore support plugin (hsz.mobi)
 /.idea/
+
+/.env
+/public/css/style.css
+/ecosystem.config.js
+/private/
+

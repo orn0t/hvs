@@ -3,17 +3,7 @@ module.exports = {
         {
             name: "uvs",
             script: "app.js",
-            watch: true,
-            env: {
-                PORT: 3000,
-                MONGODB_URI: 'mongodb://<user_name>:<password>@<mongodb_host>:<port>/<database>/',
-                FB_APP_ID: '000000000000000',
-                FB_APP_SECRET: '00000000000000000000000000000000',
-                FCM_PROJECT_ID: '<project_id>',
-                FCM_CLIENT_EMAIL: 'foo@<project_id>.iam.gserviceaccount.com',
-                FCM_PRIVATE_KEY: '-----BEGIN PRIVATE KEY-----\n<key>\n-----END PRIVATE KEY-----\n',
-                API_DEBUG: false,
-            },
+            watch: true
         },
     ],
 }

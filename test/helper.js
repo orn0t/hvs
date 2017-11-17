@@ -3,22 +3,31 @@ const proxyquire = require('proxyquire');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const Mockgoose = require('mockgoose').Mockgoose;
-const mockgoose = new Mockgoose(mongoose);
+require('dotenv').config('../.env');
 
-const proxiedMongoose = {
-    connect: (db) => {
-        before((done) => {
-            mockgoose.prepareStorage().then(function() {
-                mongoose.connect(db, (err) => {
-                    done(err);
+if (process.env.MOCK_MONGO == 'true') {
+    const Mockgoose = require('mockgoose').Mockgoose;
+    const mockgoose = new Mockgoose(mongoose);
+
+    const proxiedMongoose = {
+        connect: (db) => {
+            before((done) => {
+                mockgoose.prepareStorage().then(function() {
+                    mongoose.connect(db, (err) => {
+                        done(err);
+                    });
                 });
             });
-        });
-    }
-};
+        }
+    };
 
-module.exports.app = proxyquire('../app', { mongoose: proxiedMongoose });
+    app = proxyquire('../app', { mongoose: proxiedMongoose });
+
+} else {
+    app = require('../app');
+}
+
+module.exports.app = app;
 
 module.exports.fix = {
     cleanup: () => { mongoose.connection.db.dropDatabase(err => { if (err) { console.log(err) } } )},
